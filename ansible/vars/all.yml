@@ -8,3 +8,23 @@ nginx:
     install: '1'
     docroot: /dohernandez/src/web
     servername: dev.dohernandez.io
+mysql:
+    install: '1'
+    root_password: dohernandez
+    database: dohernandez
+    user: dohernandez
+    password: dohernandez
+    dump: ''
+mongodb:
+    install: '1'
+redis:
+    install: '1'
+    port: '6379'
+php:
+    install: '1'
+    ppa: php5-5.6
+    packages: [php5-cli, php5-intl, php5-mcrypt, php5-curl, php5-mysql, php5-mongo]
+xdebug:
+    install: '1'
+composer:
+    install: '1'

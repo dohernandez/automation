@@ -6,3 +6,10 @@
   roles:
     - server
     - nginx
+    - mysql
+    - mongodb
+    - redis
+    - php
+    - xdebug
+    - composer
+    - app
