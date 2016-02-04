@@ -39,7 +39,9 @@ Vagrant.configure("2") do |config|
 
     config.vm.network "forwarded_port", guest: 22, host: 1274, id: "ssh", auto_correct: true
 
+    # IP should match with the ip defined in the group [dohernandez-web] in the file "ansible/inventories/local.ini"
     config.vm.network :private_network, ip: "10.10.10.110"
+
     config.ssh.forward_agent = true
 
     # If ansible is in your path it will provision from your HOST machine
@@ -47,12 +49,12 @@ Vagrant.configure("2") do |config|
     if which('ansible-playbook')
         config.vm.provision "ansible" do |ansible|
             ansible.playbook = "ansible/playbook.yml"
-            ansible.inventory_path = "ansible/inventories/dev"
+            ansible.inventory_path = "ansible/inventories/local.ini"
             ansible.limit = 'all'
         end
     else
-        config.vm.provision :shell, path: "ansible/windows.sh", args: ["default"]
+        config.vm.provision :shell, path: "ansible/.sh", args: ["default"]
     end
 
-    config.vm.synced_folder "./src", "/dohernandez", type: "nfs"
+    config.vm.synced_folder "./src", "/dohernandez/src/web", type: "nfs"
 end
