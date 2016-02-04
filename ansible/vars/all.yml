@@ -1,0 +1,10 @@
+---
+server:
+    install: '1'
+    packages: [vim, git, htop, nodejs, npm]
+    timezone: UTC
+    locale: pt_BR.UTF-8
+nginx:
+    install: '1'
+    docroot: /dohernandez/src/web
+    servername: dev.dohernandez.io
