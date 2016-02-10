@@ -52,3 +52,25 @@ Make sure you have the following software installed in your machine. If running 
 + [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
 + [Vagrant >=1.8.1](https://www.vagrantup.com/downloads.html)
 + [Git](https://git-scm.com/downloads)
+
+### OSX Must-haves
+
+[Homebrew](http://brew.sh/) and [Cask](http://caskroom.io/) make it very easy to install software on OSX. This guide was written assuming their use.
+
+```bash
+# Install Homebrew
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Install Cask
+brew install caskroom/cask/brew-cask
+
+# Install git
+brew install git
+
+# Install virtualbox
+brew cask install virtualbox
+
+# Install vagrant and plugins
+brew cask install vagrant
+vagrant plugin install vagrant-hostmanager
+```
