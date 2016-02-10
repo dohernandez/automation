@@ -1,5 +1,4 @@
 # Ansible settings
-
 limit: all
 playbook: "ansible/playbook.yml"
 # The roles defined:
@@ -12,4 +11,4 @@ playbook: "ansible/playbook.yml"
 #     - { role: xdebug,    tags: ["xdebug", "dev-app"] }
 #     - { role: composer,  tags: ["composer", "app", "dev-app"] }
 #     - { role: app,       tags: ["app", "dev-app"] }
-tags: app
+tags: server
