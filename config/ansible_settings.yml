@@ -1,0 +1,14 @@
+# Ansible settings
+limit: all
+playbook: "ansible/playbook.yml"
+# The roles defined:
+#     - { role: server,    tags: ["server", "nginx", "mysql", "mongodb", "redis", "php", "xdebug", "composer", "app", "dev-app"] }
+#     - { role: nginx,     tags: ["nginx", "app", "dev-app"] }
+#     - { role: mysql,     tags: ["mysql", "app", "dev-app"] }
+#     - { role: mongodb,   tags: ["mongodb", "dev-app"] }
+#     - { role: redis,     tags: ["redis"] }
+#     - { role: php,       tags: ["php", "app", "dev-app"] }
+#     - { role: xdebug,    tags: ["xdebug", "dev-app"] }
+#     - { role: composer,  tags: ["composer", "app", "dev-app"] }
+#     - { role: app,       tags: ["app", "dev-app"] }
+tags: server

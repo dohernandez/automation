@@ -10,7 +10,8 @@ or simple you don't' like it, you should edit the lines shown below into the Vag
 
 ```
 config.vm.network "forwarded_port", guest: 22, host: 1274, id: "ssh", auto_correct: true
-...
+
+# IP should match with the ip defined in the group [dohernandez-web] in the file "ansible/inventories/local.ini"
 config.vm.network :private_network, ip: "10.10.10.110"
 ```
 
@@ -38,9 +39,13 @@ Under some circumstances, El Capitain and VirtualBox have been known to cause pr
 ### Environments
 Each environment is represented by a file on the inventories level, usually `local.ini`, ect.
 
-Each environment describes groups and instances that should live inside it plus some other environment variables. Take a moment to look at the local.ini environment file.
+Each environment describes groups and instances that should live inside it plus some other environment variables. Take a moment to look at the `local.ini` environment file.
 
 ```
 [dohernandez-web]
 10.10.10.110
 ```
+
+will create (or update) a servers: `10.10.10.110`.
+
+## Technology

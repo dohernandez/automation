@@ -6,55 +6,81 @@
 #by commenting or removing the line below and providing the config.vm.box_url parameter,
 #if it's not already defined in this Vagrantfile. Keep in mind that you won't be able
 #to use the Vagrant Cloud and other newer Vagrant features.
-Vagrant.require_version ">= 1.5"
+Vagrant.require_version ">= 1.8"
 
-# Check to determine whether we're on a windows or linux/os-x host,
-# later on we use this to launch ansible in the supported way
-# source: https://stackoverflow.com/questions/2108727/which-in-ruby-checking-if-program-exists-in-path-from-ruby
-def which(cmd)
-    exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
-    ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
-        exts.each { |ext|
-            exe = File.join(path, "#{cmd}#{ext}")
-            return exe if File.executable? exe
-        }
-    end
-    return nil
+# OS detection
+module OS
+  def OS.mac?
+   (/darwin/ =~ RUBY_PLATFORM) != nil
+  end
 end
+
+require "yaml"
 
 Vagrant.configure("2") do |config|
 
+    # Box setup
+    config.vm.box = "ubuntu/trusty64"
+    config.vm.box_url = "https://vagrantcloud.com/ubuntu/boxes/trusty64/versions/14.04/providers/virtualbox.box"
+
+    # Get box settings
+    box = YAML.load_file(File.dirname(__FILE__) + "/config/box_setting.yml")
+
     config.vm.provider :virtualbox do |v|
-        v.name = "dohernandez-automation"
+        v.name = box["name"]
         v.customize [
             "modifyvm", :id,
-            "--name", "dohernandez-automation",
-            "--memory", 512,
+            "--name", box["name"],
+            "--memory", box["memory"],
             "--natdnshostresolver1", "on",
-            "--cpus", 1,
+            "--cpus", box["cpus"]
         ]
     end
 
-    config.vm.box = "ubuntu/trusty64"
+    # Host setup
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+    config.hostmanager.aliases = box["alias"].join(" ")
 
-    config.vm.network "forwarded_port", guest: 22, host: 1274, id: "ssh", auto_correct: true
 
-    # IP should match with the ip defined in the group [dohernandez-web] in the file "ansible/inventories/local.ini"
-    config.vm.network :private_network, ip: "10.10.10.110"
+    # Networking
+    config.vm.hostname = box["name"]
+    config.vm.network :private_network, ip: box["ip"] # Base box
 
+    # Use host ssh
     config.ssh.forward_agent = true
+    config.vm.network "forwarded_port", guest: 22, host: 1200, id: "ssh", auto_correct: true
 
-    # If ansible is in your path it will provision from your HOST machine
-    # If ansible is not found in the path it will be instaled in the VM and provisioned from there
-    if which('ansible-playbook')
-        config.vm.provision "ansible" do |ansible|
-            ansible.playbook = "ansible/playbook.yml"
-            ansible.inventory_path = "ansible/inventories/local.ini"
-            ansible.limit = 'all'
-        end
-    else
-        config.vm.provision :shell, path: "ansible/.sh", args: ["default"]
+    # OSX and Linux shares
+    # Sync code folder
+    config.vm.synced_folder ".", "/vagrant", type: "nfs"
+
+    # Adding the ssh key into the VM
+    config.vm.provision "shell" do |s|
+        s.inline = "echo $1 | grep -xq \"$1\" /home/vagrant/.ssh/authorized_keys || echo $1 | tee -a /home/vagrant/.ssh/authorized_keys"
+        s.args = [File.read(File.expand_path("~/.ssh/id_rsa.pub"))]
     end
 
-    config.vm.synced_folder "./src", "/dohernandez/src/web", type: "nfs"
+    # Git config file
+    config.vm.provision "file", source: "~/.gitconfig", destination: "/home/vagrant/.gitconfig"
+
+    # Manually install ansible 1.9.4 because 2.0 is incompatibile
+    # @see https://github.com/geerlingguy/drupal-vm/issues/372
+    config.vm.provision "shell", inline: "sudo apt-get update"
+    config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
+    config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
+    config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
+
+    # Provision
+
+    config.vm.provision "ansible_local" do |ansible|
+        # Get ansible settings
+        settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
+
+        ansible.install = false # we already installed it earlier
+        ansible.limit = settings["limit"]
+        ansible.playbook = settings["playbook"]
+        ansible.tags= settings["tags"]
+    end
+
 end

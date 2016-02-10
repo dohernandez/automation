@@ -1,15 +1,20 @@
 ---
-- hosts: all
+- name: Setup the development VM
+  hosts: all
   sudo: true
   vars_files:
     - vars/all.yml
+  # Run before roles
+  pre_tasks:
+    - apt: update_cache=yes
+      become: yes
   roles:
-    - server
-    - nginx
-    - mysql
-    - mongodb
-    - redis
-    - php
-    - xdebug
-    - composer
-    - app
+   - { role: server,    tags: ["server", "nginx", "mysql", "mongodb", "redis", "php", "xdebug", "composer", "app", "dev-app"] }
+   - { role: nginx,     tags: ["nginx", "app", "dev-app"] }
+   - { role: mysql,     tags: ["mysql", "app", "dev-app"] }
+   - { role: mongodb,   tags: ["mongodb", "dev-app"] }
+   - { role: redis,     tags: ["redis"] }
+   - { role: php,       tags: ["php", "app", "dev-app"] }
+   - { role: xdebug,    tags: ["xdebug", "dev-app"] }
+   - { role: composer,  tags: ["composer", "app", "dev-app"] }
+   - { role: app,       tags: ["app", "dev-app"] }

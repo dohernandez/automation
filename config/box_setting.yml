@@ -1,0 +1,6 @@
+# Box settings
+name: dohernandez.dev
+memory: 2048
+cpus: 2
+ip: 10.10.10.200
+alias: ["dev.framework.io"]
