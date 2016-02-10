@@ -1,8 +1,8 @@
 # Automation
 This repository contains the ansible automation code to build a simple PHP environment
 
-# Before starting
-## VM settings
+## Before starting
+### VM settings
 VirtualBox provider exposes some additional configuration options that allow you 
 to more finely control your VirtualBox-powered Vagrant environments. 
 You can modify some of them here. Copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and the edit the file, 
@@ -23,7 +23,7 @@ ip: 10.10.10.200
 alias: ["dev.framework.io"]
 ```
 
-## Ansible settings
+### Ansible settings
 Also we can tell to Ansible where to find the commands to run during the vagrant provision. 
 Copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and the edit the file ...
 
@@ -44,3 +44,11 @@ playbook: "ansible/playbook.yml"
 #     - { role: app,       tags: ["app", "dev-app"] }
 tags: server
 ```
+
+## Software
+
+Make sure you have the following software installed in your machine. If running OSX, just follow the instructions below.
+
++ [Virtualbox](https://www.virtualbox.org/wiki/Downloads)
++ [Vagrant >=1.8.1](https://www.vagrantup.com/downloads.html)
++ [Git](https://git-scm.com/downloads)
