@@ -1,5 +1,14 @@
 # Box settings
+
+# The name that appears in the VirtualBox GUI
 name: dohernandez.dev
+# The memory ram
 memory: 2048
+# The cpus
 cpus: 2
+# The private network
 ip: 10.10.10.200
+# aliases to provide for your /etc/hosts.
+alias: ["dev.dohernandez.io"]
+# Where to mount the ./src into the machine
+docroot: "/dohernandez/httpdocs"

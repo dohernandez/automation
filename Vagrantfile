@@ -55,6 +55,30 @@ Vagrant.configure("2") do |config|
     # Sync code folder
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
+    root_dir = box["docroot"].slice(0..(box["docroot"].index("/", 1)))
+    base_dir = box["docroot"].slice(0..(box["docroot"].rindex("/")))
+    ln_dir = box["docroot"].slice((box["docroot"].rindex("/") + 1)..(box["docroot"].length))
+
+    config.vm.provision "shell" do |s|
+        s.inline = "sudo rm -rf $1"
+        s.args =  root_dir
+    end
+
+    config.vm.provision "shell" do |s|
+        s.inline = "sudo mkdir -p $1"
+        s.args =  base_dir
+    end
+
+    config.vm.provision "shell" do |s|
+        s.inline = "sudo chown -R vagrant:vagrant $1"
+        s.args =  base_dir
+    end
+
+    config.vm.provision "shell" do |s|
+        s.inline = "cd $1 && ln -s /vagrant/src $2"
+        s.args =  [base_dir, ln_dir]
+    end
+
     # Adding the ssh key into the VM
     config.vm.provision "shell" do |s|
         s.inline = "echo $1 | grep -xq \"$1\" /home/vagrant/.ssh/authorized_keys || echo $1 | tee -a /home/vagrant/.ssh/authorized_keys"
@@ -66,21 +90,20 @@ Vagrant.configure("2") do |config|
 
     # Manually install ansible 1.9.4 because 2.0 is incompatibile
     # @see https://github.com/geerlingguy/drupal-vm/issues/372
-    config.vm.provision "shell", inline: "sudo apt-get update"
-    config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
-    config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
-    config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
+    #config.vm.provision "shell", inline: "sudo apt-get update"
+    #config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
+    #config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
+    #config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
 
     # Provision
+    # Get ansible settings
+    settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
 
-    config.vm.provision "ansible_local" do |ansible|
-        # Get ansible settings
-        settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
-
-        ansible.install = false # we already installed it earlier
-        ansible.limit = settings["limit"]
-        ansible.playbook = settings["playbook"]
-        ansible.tags= settings["tags"]
-    end
+    #config.vm.provision "ansible_local" do |ansible|
+#        ansible.install = false # we already installed it earlier
+ #       ansible.limit = settings["limit"]
+  #      ansible.playbook = settings["playbook"]
+   #     ansible.tags= settings["tags"]
+    #end
 
 end
