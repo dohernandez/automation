@@ -72,4 +72,4 @@ To get started developing:
 2. Cd into the repository
 3. Run `vagrant up` to get the VM running.
 4. Your application code go into `src/<app name>`, ex: `src/laravel`.
-5. Your public files go into `public/<files>`, ex: `public/index.php`.
+5. Your public files go into `src/<app name>/public`, ex: `src/laravel/public`.

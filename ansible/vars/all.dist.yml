@@ -6,7 +6,7 @@ server:
     locale: pt_BR.UTF-8
 nginx:
     install: '1'
-    docroot: /dohernandez/public
+    docroot: /dohernandez/<APP-NAME>/public
     servername: dev.dohernandez.io # This server name have to correspond with one aliases defined to provide for your /etc/hosts.
 mysql:
     install: '1'

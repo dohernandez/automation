@@ -74,11 +74,6 @@ Vagrant.configure("2") do |config|
         s.args =  base_dir
     end
 
-    config.vm.provision "shell" do |s|
-        s.inline = "cd $1 && ln -s /vagrant/public public"
-        s.args =  base_dir
-    end
-
     # Adding the ssh key into the VM
     config.vm.provision "shell" do |s|
         s.inline = "echo $1 | grep -xq \"$1\" /home/vagrant/.ssh/authorized_keys || echo $1 | tee -a /home/vagrant/.ssh/authorized_keys"
