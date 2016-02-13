@@ -1,5 +1,25 @@
 # Automation
-This repository contains the ansible automation code to build a simple PHP environment
+##Background
+Vagrant and VirtualBox (or some other VM provider) can be used to quickly build or rebuild virtual servers.
+
+This repository contains the Ansible automation code to provision a simple Nginx, MySQL and PHP (the 'EMP' part of 'LEMP') environment.
+
+##Applications available
+
+- **LEMP** (Linux Nginx 1.4, MySQL, and PHP-fpm 5.6) _installed_
+    + MySQL connection details:
+        * host: `localhost`
+        * port: `3306`
+        * dbname: `dohernandez`
+        * username: `dohernandez`
+        * password: `dohernandez`
+- **Composer** _installed_
+- **XDebug**
+- **MongoDB**
+    + MongoDB connection details:
+        * host: `localhost`
+        * port: `27017`
+- **Redis**
 
 ## Before starting
 ### VM settings
@@ -44,7 +64,7 @@ brew cask install vagrant
 vagrant plugin install vagrant-hostmanager
 ```
 
-## Booting up your local environment
+## Getting Started
 
 To get started developing:
 
