@@ -56,27 +56,27 @@ Vagrant.configure("2") do |config|
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
     root_dir = box["docroot"].slice(0..(box["docroot"].index("/", 1)))
-    base_dir = box["docroot"].slice(0..(box["docroot"].rindex("/")))
-    ln_dir = box["docroot"].slice((box["docroot"].rindex("/") + 1)..(box["docroot"].length))
 
-    config.vm.provision "shell" do |s|
-        s.inline = "sudo rm -rf $1"
-        s.args =  root_dir
+    base_dir = root_dir
+
+    position = box["docroot"].rindex("/")
+    if position.nil?
+        base_dir = box["docroot"].slice(0..position)
     end
 
     config.vm.provision "shell" do |s|
-        s.inline = "sudo mkdir -p $1"
+        s.inline = "sudo rm -rf $1 && sudo mkdir -p $2 && sudo chown -R vagrant:vagrant $2"
+        s.args =  [root_dir, base_dir]
+    end
+
+    config.vm.provision "shell" do |s|
+        s.inline = "cd $1 && ln -s /vagrant/src src"
         s.args =  base_dir
     end
 
     config.vm.provision "shell" do |s|
-        s.inline = "sudo chown -R vagrant:vagrant $1"
+        s.inline = "cd $1 && ln -s /vagrant/public public"
         s.args =  base_dir
-    end
-
-    config.vm.provision "shell" do |s|
-        s.inline = "cd $1 && ln -s /vagrant/src $2"
-        s.args =  [base_dir, ln_dir]
     end
 
     # Adding the ssh key into the VM

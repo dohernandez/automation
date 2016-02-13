@@ -6,7 +6,7 @@ server:
     locale: pt_BR.UTF-8
 nginx:
     install: '1'
-    docroot: /dohernandez/httpdocs # This server doc root have to correspond with the docroot variable defined in the box_setting file.
+    docroot: /dohernandez/public
     servername: dev.dohernandez.io # This server name have to correspond with one aliases defined to provide for your /etc/hosts.
 mysql:
     install: '1'

@@ -4,75 +4,15 @@ This repository contains the ansible automation code to build a simple PHP envir
 ## Before starting
 ### VM settings
 To edit additional configuration options exposes in VirtualBox-powered Vagrant environments,  
-copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and the edit it.
-
-```
-# Box settings
-
-# The name that appears in the VirtualBox GUI
-name: dohernandez.dev
-# The memory ram
-memory: 2048
-# The cpus
-cpus: 2
-# The private network
-ip: 10.10.10.200
-# aliases to provide for your /etc/hosts.
-alias: ["dev.dohernandez.io"]
-```
+copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the file.
 
 ### Ansible settings
 To edit where Ansible can find its commands to run during the vagrant provision, 
-copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and the edit it.
-
-```
-# Ansible settings
-
-limit: all
-playbook: "ansible/playbook.yml"
-# The roles defined:
-#     - { role: server,    tags: ["server", "nginx", "mysql", "mongodb", "redis", "php", "xdebug", "composer", "app", "dev-app"] }
-#     - { role: nginx,     tags: ["nginx", "app", "dev-app"] }
-#     - { role: mysql,     tags: ["mysql", "app", "dev-app"] }
-#     - { role: mongodb,   tags: ["mongodb", "dev-app"] }
-#     - { role: redis,     tags: ["redis"] }
-#     - { role: php,       tags: ["php", "app", "dev-app"] }
-#     - { role: xdebug,    tags: ["xdebug", "dev-app"] }
-#     - { role: composer,  tags: ["composer", "app", "dev-app"] }
-#     - { role: app,       tags: ["app", "dev-app"] }
-tags: server
-```
+copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the file.
 
 ### Ansible variable settings
 To edit the Variables in Ansible used in all the roles available, 
-copy the `ansible/var/all.dist.yml` to `ansible/var/all.yml` and the edit the file ...
-
-```
----
-server:
-    ...
-    packages: [vim, git, htop, nodejs, npm]
-    timezone: UTC
-    locale: pt_BR.UTF-8
-nginx:
-    ...
-    docroot: /dohernandez/httpdocs # This server doc root have to correspond with the docroot variable defined in the box_setting file
-    servername: dev.dohernandez.io # This server name have to correspond with one aliases defined to provide for your /etc/hosts.
-mysql:
-    ...
-    root_password: dohernandez
-    database: dohernandez
-    user: dohernandez
-    password: dohernandez
-    dump: ''
-redis:
-    ...
-    port: '6379'
-php:
-    ...
-    ppa: php5-5.6
-    packages: [php5-cli, php5-intl, php5-mcrypt, php5-curl, php5-mysql, php5-mongo]
-```
+copy the `ansible/var/all.dist.yml` to `ansible/var/all.yml` and the edit the file.
 
 ## Software
 
@@ -111,4 +51,5 @@ To get started developing:
 1. Clone this repository somewhere.
 2. Cd into the repository
 3. Run `vagrant up` to get the VM running.
-4. Your application code go into Code can be add in `src/<app name>`, ex: `src/web`.
+4. Your application code go into `src/<app name>`, ex: `src/laravel`.
+5. Your public files go into `public/<files>`, ex: `public/index.php`.
