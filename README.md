@@ -30,9 +30,9 @@ copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the 
 To edit where Ansible can find its commands to run during the vagrant provision, 
 copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the file.
 
-### Ansible variable settings
+### Ansible variable
 To edit the Variables in Ansible used in all the roles available, 
-copy the `ansible/var/all.dist.yml` to `ansible/var/all.yml` and the edit the file.
+copy the `config/ansible_vars.dist.yml` to `config/ansible_vars.yml` and the edit the file.
 
 ## Software
 

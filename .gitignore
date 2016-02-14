@@ -1,6 +1,6 @@
 .idea/
 .vagrant/
 .DS_Store
-ansible/vars/all.yml
+config/ansible_vars.yml
 config/ansible_settings.yml
 config/box_setting.yml

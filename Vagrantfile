@@ -37,12 +37,6 @@ Vagrant.configure("2") do |config|
         ]
     end
 
-    # Host setup
-    config.hostmanager.enabled = true
-    config.hostmanager.manage_host = true
-    config.hostmanager.aliases = box["alias"].join(" ")
-
-
     # Networking
     config.vm.hostname = box["name"]
     config.vm.network :private_network, ip: box["ip"] # Base box
@@ -55,23 +49,23 @@ Vagrant.configure("2") do |config|
     # Sync code folder
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
-    root_dir = box["docroot"].slice(0..(box["docroot"].index("/", 1)))
+    # Get ansible vars
+    ansible_vars = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_vars.yml")
 
-    base_dir = root_dir
+    # Host setup
 
-    position = box["docroot"].rindex("/")
-    if position.nil?
-        base_dir = box["docroot"].slice(0..position)
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+    config.hostmanager.aliases = ansible_vars["servername"]
+
+    config.vm.provision "shell" do |s|
+        s.inline = "sudo rm -rf $1 && sudo mkdir -p $1 && sudo chown -R vagrant:vagrant $1"
+        s.args =  [ansible_vars["docroot"]]
     end
 
     config.vm.provision "shell" do |s|
-        s.inline = "sudo rm -rf $1 && sudo mkdir -p $2 && sudo chown -R vagrant:vagrant $2"
-        s.args =  [root_dir, base_dir]
-    end
-
-    config.vm.provision "shell" do |s|
-        s.inline = "cd $1 && ln -s /vagrant/src src"
-        s.args =  base_dir
+        s.inline = "cd $1 && ln -s /vagrant/src/$2 $2"
+        s.args =  [ansible_vars["docroot"], ansible_vars["app_name"]]
     end
 
     # Adding the ssh key into the VM
@@ -85,20 +79,21 @@ Vagrant.configure("2") do |config|
 
     # Manually install ansible 1.9.4 because 2.0 is incompatibile
     # @see https://github.com/geerlingguy/drupal-vm/issues/372
-    #config.vm.provision "shell", inline: "sudo apt-get update"
-    #config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
-    #config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
-    #config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
+    config.vm.provision "shell", inline: "sudo apt-get update"
+    config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
+    config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
+    config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
 
     # Provision
-    # Get ansible settings
-    settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
+    # Get ansible play settings
+    ansible_play_settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
 
-    #config.vm.provision "ansible_local" do |ansible|
-#        ansible.install = false # we already installed it earlier
- #       ansible.limit = settings["limit"]
-  #      ansible.playbook = settings["playbook"]
-   #     ansible.tags= settings["tags"]
-    #end
+    config.vm.provision "ansible_local" do |ansible|
+        ansible.install = false # we already installed it earlier
+        ansible.limit = ansible_play_settings["limit"]
+        ansible.playbook = ansible_play_settings["playbook"]
+        ansible.tags = ansible_play_settings["tags"]
+        ansible.extra_vars = "config/ansible_vars.yml"
+    end
 
 end

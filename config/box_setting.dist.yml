@@ -8,7 +8,3 @@ memory: 2048
 cpus: 2
 # The private network
 ip: 10.10.10.200
-# aliases to provide for your /etc/hosts.
-alias: ["dev.dohernandez.io"]
-# Where to mount the src and public folders into the machine
-docroot: "/dohernandez"
