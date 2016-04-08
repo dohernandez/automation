@@ -1,0 +1,14 @@
+---
+- name: Setup the development VM
+  hosts: all
+  sudo: true
+  vars_files:
+    - vars/all.yml
+  # Run before roles
+  pre_tasks:
+    - apt: update_cache=yes
+      become: yes
+  roles:
+   - { role: server,    tags: ["server", "docker", "app", "dev-app"] }
+   - { role: docker,    tags: ["docker", "app", "dev-app"] }
+   - { role: app,       tags: ["app", "dev-app"] }

@@ -1,0 +1,54 @@
+---
+- name: Ensure apt works with HTTPS
+  apt:
+    pkg: "{{item}}"
+    state: installed
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+
+- name: Add GPG key
+  apt_key:
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+
+- name: Install linux-image-extra for ubuntu 14.04
+  apt:
+    pkg: linux-image-extra-3.13.0-74-generic # move this to vars
+    state: installed
+    update_cache: yes
+
+- name: Install apparmor
+  apt:
+    pkg: apparmor
+    state: installed
+
+- name: Update apt sources
+  copy:
+    src: docker.list
+    dest: /etc/apt/sources.list.d/docker.list
+
+- name: Purge lxc-docker
+  apt:
+    pkg: lxc-docker
+    state: absent
+    purge: true
+
+- name: Install docker engine
+  apt:
+    pkg: docker-engine
+    state: installed
+    update_cache: yes
+
+- name: Configure docker
+  copy:
+    src: docker
+    dest: /etc/default/docker
+  notify:
+    - Reload docker
+
+- name: Install docker compose
+  shell: curl -L https://github.com/docker/compose/releases/download/1.6.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+- name: Make docker compose executable
+  shell: chmod +x /usr/local/bin/docker-compose
