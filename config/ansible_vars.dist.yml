@@ -17,3 +17,6 @@ mysql:
     user: dohernandez
     password: dohernandez
     dump: ''
+
+composer:
+    github_oauth_token   : ""
