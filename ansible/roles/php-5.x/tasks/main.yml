@@ -1,7 +1,7 @@
 ---
 - name: Add ppa Repository
   sudo: yes
-  apt_repository: repo=ppa:ondrej/{{ php.ppa }}
+  apt_repository: repo=ppa:ondrej/{{ php5x.ppa }}
 
 - name: Update apt
   sudo: yes
@@ -18,8 +18,8 @@
 - name: Install PHP Packages
   sudo: yes
   apt: pkg={{ item }} state=latest
-  with_items: php.packages
-  when: php.packages is defined
+  with_items: php5x.packages
+  when: php5x.packages is defined
 
 - include: configure.yml
 - include: pecl.yml

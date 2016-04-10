@@ -14,7 +14,8 @@
    - { role: mysql,     tags: ["mysql", "app", "dev-app"] }
    - { role: mongodb,   tags: ["mongodb"] }
    - { role: redis,     tags: ["redis"] }
-   - { role: php,       tags: ["php", "app", "dev-app"] }
+   - { role: php-5.x,   tags: ["php", "app", "dev-app"], when: php5x.install == "1" }
+   - { role: php-7.x,   tags: ["php", "app", "dev-app"], when: php7x.install == "1" }
    - { role: xdebug,    tags: ["xdebug", "dev-app"] }
    - { role: composer,  tags: ["composer", "app", "dev-app"] }
    - { role: app,       tags: ["app", "dev-app"] }
