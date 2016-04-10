@@ -1,14 +1,23 @@
 # Ansible settings
+
 limit: all
-playbook: "ansible/playbook.yml"
-# The roles defined:
+
+playbook: "ansible/standalone.playbook.yml"
+# The roles defined for "standalone.playbook.yml":
 #     - { role: server,    tags: ["server", "nginx", "mysql", "mongodb", "redis", "php", "xdebug", "composer", "app", "dev-app"] }
 #     - { role: nginx,     tags: ["nginx", "app", "dev-app"] }
 #     - { role: mysql,     tags: ["mysql", "app", "dev-app"] }
 #     - { role: mongodb,   tags: ["mongodb"] }
 #     - { role: redis,     tags: ["redis"] }
-#     - { role: php,       tags: ["php", "app", "dev-app"] }
+#     - { role: php-5.x,   tags: ["php", "app", "dev-app"], when: php_version == '5.x' }
+#     - { role: php-7.x,   tags: ["php", "app", "dev-app"], when: php_version == '7.x' }
 #     - { role: xdebug,    tags: ["xdebug", "dev-app"] }
 #     - { role: composer,  tags: ["composer", "app", "dev-app"] }
+#     - { role: app,       tags: ["app", "dev-app"] }
+
+#playbook: "ansible/docker.playbook.yml"
+# The roles defined for "docker.playbook.yml":
+#     - { role: server,    tags: ["server", "docker", "app", "dev-app"] }
+#     - { role: docker,    tags: ["docker", "app", "dev-app"] }
 #     - { role: app,       tags: ["app", "dev-app"] }
 tags: server
