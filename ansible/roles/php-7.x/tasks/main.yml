@@ -20,3 +20,5 @@
   apt: pkg={{ item }} state=latest
   with_items: php7x.packages
   when: php7x.packages is defined
+
+- include: configure.yml
