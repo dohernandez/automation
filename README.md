@@ -13,6 +13,16 @@ This repository contains the Ansible automation code to provision a simple Nginx
         * dbname: `dohernandez`
         * username: `dohernandez`
         * password: `dohernandez`
+
+**Note**
+
+```
+To enable the php 7.0 version you should edit the file _vars/all.yml_.
+
+php7x:
+    install: '1'.
+```
+  
 - **Composer** _installed_
 - **XDebug**
 - **MongoDB**
