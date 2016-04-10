@@ -17,10 +17,16 @@ This repository contains the Ansible automation code to provision a simple Nginx
 **Note**
 
 ```
-To enable the php 7.0 version you should edit the file _vars/all.yml_.
+To enable the php 7.0 version you should edit the file "vars/all.yml".
 
 php7x:
-    install: '1'.
+    install: '1'
+    
+by default, the php 7.0 version is disable
+
+php7x:
+    install: '0'
+    
 ```
   
 - **Composer** _installed_
