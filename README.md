@@ -6,7 +6,7 @@ This repository contains the Ansible automation code to provision a simple Nginx
 
 ##Applications available
 
-- **LEMP** (Linux Nginx 1.4, MySQL, and PHP-fpm 5.6) _installed_
+- **LEMP** (Linux Nginx 1.4, MySQL, and PHP-fpm 7.0) _installed_
     + MySQL connection details:
         * host: `localhost`
         * port: `3306`
@@ -17,15 +17,15 @@ This repository contains the Ansible automation code to provision a simple Nginx
 **Note**
 
 ```
-To enable the php 7.0 version you should edit the file "vars/all.yml".
-
-php7x:
-    install: '1'
-    
-by default, the php 7.0 version is disable
+To enable the php 5.6 version you should edit the file "vars/all.yml".
 
 php7x:
     install: '0'
+    
+by default, the php 5.6 version is disable
+
+php7x:
+    install: '1'
     
 ```
   
