@@ -19,12 +19,12 @@ This repository contains the Ansible automation code to provision a simple Nginx
 ```
 To enable the php 5.6 version you should edit the file "vars/all.yml".
 
-php7x:
+php5x:
     install: '0'
     
 by default, the php 5.6 version is disable
 
-php7x:
+php5x:
     install: '1'
     
 ```
