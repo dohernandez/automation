@@ -6,6 +6,7 @@
     - curl
     - wget
     - python-software-properties
+    - language-pack-en-base
 
 - name: Install Extra Packages
   sudo: yes
@@ -21,6 +22,17 @@
   sudo: yes
   file: src=/usr/share/zoneinfo/{{server.timezone}} dest=/etc/localtime state=link force=yes backup=yes
 
-- name: Set default system language pack
-  shell: locale-gen {{server.locale}}
+- name: Install locales
+  apt: pkg=locales state=present
+
+- name: Generate locale
+  locale_gen: name={{server.locale}} state=present
+
+- name: dev locale
+  action: command sudo update-locale LC_ALL=en_US.UTF-8
+
+- name: set default locale
   sudo: yes
+  lineinfile: dest=/etc/default/locale
+    regexp="LC_ALL"
+    line="LC_ALL=\"en_US.UTF-8\""

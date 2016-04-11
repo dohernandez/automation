@@ -5,5 +5,12 @@
 
 - name: Change default nginx site
   sudo: yes
-  template: src=default.tpl dest=/etc/nginx/sites-available/default
+  template: src=default5x.tpl dest=/etc/nginx/sites-available/default
+  when: php5x.install == "1"
+  notify: restart nginx
+
+- name: Change default nginx site
+  sudo: yes
+  template: src=default7x.tpl dest=/etc/nginx/sites-available/default
+  when: php7x.install == "1"
   notify: restart nginx
