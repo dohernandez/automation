@@ -53,6 +53,7 @@ php7x:
       - php7.0-pgsql
       - php7.0-bz2
       - php7.0-zip
+      - php7.0-bcmath
 xdebug:
     install: '1'
 composer:
