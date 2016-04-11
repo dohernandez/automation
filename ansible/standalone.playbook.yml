@@ -18,4 +18,5 @@
    - { role: php-7.x,       tags: ["php", "app", "dev-app"], when: php7x.install == "1" }
    - { role: xdebug,        tags: ["xdebug", "dev-app"] }
    - { role: composer,      tags: ["composer", "app", "dev-app"] }
+   - { role: phpunit,   tags: ["phpunit", "dev-app"] }
    - { role: app,           tags: ["app", "dev-app"] }
