@@ -30,6 +30,7 @@ php5x:
       - php5-curl
       - php5-mysql
       - php5-mongo
+      - php5-dev
 php7x:
     install: '1'
     ppa: php
