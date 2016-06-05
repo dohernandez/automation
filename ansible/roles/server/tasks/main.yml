@@ -30,9 +30,6 @@
 - name: Install locales
   apt: pkg=locales state=present
 
-- name: Generate locale
-  locale_gen: name={{server.locale}} state=present
-
 - name: dev locale
   action: command sudo update-locale LC_ALL=en_US.UTF-8
 
