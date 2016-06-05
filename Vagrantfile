@@ -77,19 +77,11 @@ Vagrant.configure("2") do |config|
     # Git config file
     config.vm.provision "file", source: "~/.gitconfig", destination: "/home/vagrant/.gitconfig"
 
-    # Manually install ansible 1.9.4 because 2.0 is incompatibile
-    # @see https://github.com/geerlingguy/drupal-vm/issues/372
-    config.vm.provision "shell", inline: "sudo apt-get update"
-    config.vm.provision "shell", inline: "sudo apt-get install -y python-pip python-dev"
-    config.vm.provision "shell", inline: "sudo pip install ansible==1.9.4"
-    config.vm.provision "shell", inline: "sudo cp /usr/local/bin/ansible /usr/bin/ansible"
-
     # Provision
     # Get ansible play settings
     ansible_play_settings = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_settings.yml")
 
-    config.vm.provision "ansible_local" do |ansible|
-        ansible.install = false # we already installed it earlier
+    config.vm.provision :ansible do |ansible|
         ansible.limit = ansible_play_settings["limit"]
         ansible.playbook = ansible_play_settings["playbook"]
         ansible.tags = ansible_play_settings["tags"]
