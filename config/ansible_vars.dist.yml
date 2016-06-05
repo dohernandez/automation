@@ -1,9 +1,9 @@
 # aliases to provide for your /etc/hosts.
-servername: dev.lawton.io
+servername: dev.dohernandez.io
 # Where to mount the /vagrant into the machine
 docroot: "/dohernandez"
 # App name
-app_name: lawton
+app_name: dohernandez
 
 # nginx asible variables. Overwrite the nginx variables defined in the file var/all.yml
 nginx:
