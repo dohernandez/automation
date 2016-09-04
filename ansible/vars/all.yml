@@ -6,15 +6,21 @@ server:
     locale: de_DE.UTF-8
 nginx:
     install: '1'
-    docroot: /dohernandez/dev/public
-    servername: dev.dohernandez.io
+    vhost:
+      dohernandez:
+        docroot: /vagrant/src/public
+        servername: dev.dohernandez.io
+      eventsourcing:
+        docroot: /vagrant/src/eventsourcing/public
+        servername: dev.eventsourcing.io
 mysql:
     install: '1'
-    root_password: dohernandez
-    database: dohernandez
-    user: dohernandez
-    password: dohernandez
-    dump: ''
+    databases:
+      dohernandez:
+        root_password: dohernandez
+        user: dohernandez
+        password: dohernandez
+        dump: ''
 mongodb:
     install: '1'
 redis:

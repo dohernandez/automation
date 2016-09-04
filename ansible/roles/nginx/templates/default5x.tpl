@@ -1,10 +1,10 @@
 server {
     listen  80;
 
-    root {{ nginx_docroot }};
+    root {{ item.value.docroot }};
     index index.html index.php;
 
-    server_name {{ nginx_servername }};
+    server_name {{ item.value.servername }};
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;

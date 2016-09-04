@@ -8,3 +8,5 @@ memory: 2048
 cpus: 2
 # The private network
 ip: 10.10.10.200
+
+aliases: dev.dohernandez.io dev.eventsourcing.io

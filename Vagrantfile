@@ -49,30 +49,12 @@ Vagrant.configure("2") do |config|
     # Sync code folder
     config.vm.synced_folder ".", "/vagrant", type: "nfs"
 
-    # Get ansible vars
-    ansible_vars = YAML.load_file(File.dirname(__FILE__) + "/config/ansible_vars.yml")
-
-    # Host setup
-
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
-    config.hostmanager.aliases = ansible_vars["servername"]
+    config.hostmanager.aliases = box["aliases"]
 
-    config.vm.provision "shell" do |s|
-        s.inline = "sudo rm -rf $1 && sudo mkdir -p $1 && sudo chown -R vagrant:vagrant $1"
-        s.args =  [ansible_vars["docroot"]]
-    end
-
-    config.vm.provision "shell" do |s|
-        s.inline = "cd $1 && ln -s /vagrant/src/$2 $2"
-        s.args =  [ansible_vars["docroot"], ansible_vars["app_name"]]
-    end
-
-    # Adding the ssh key into the VM
-    config.vm.provision "shell" do |s|
-        s.inline = "echo $1 | grep -xq \"$1\" /home/vagrant/.ssh/authorized_keys || echo $1 | tee -a /home/vagrant/.ssh/authorized_keys"
-        s.args = [File.read(File.expand_path("~/.ssh/id_rsa.pub"))]
-    end
+    # Git ignore file
+    config.vm.provision "file", source: "~/.gitignore", destination: "/home/vagrant/.gitignore"
 
     # Git config file
     config.vm.provision "file", source: "~/.gitconfig", destination: "/home/vagrant/.gitconfig"
@@ -85,7 +67,6 @@ Vagrant.configure("2") do |config|
         ansible.limit = ansible_play_settings["limit"]
         ansible.playbook = ansible_play_settings["playbook"]
         ansible.tags = ansible_play_settings["tags"]
-        ansible.extra_vars = "config/ansible_vars.yml"
     end
 
 end

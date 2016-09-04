@@ -5,12 +5,20 @@
 
 - name: Change default nginx site
   sudo: yes
-  template: src=default5x.tpl dest=/etc/nginx/sites-available/default
+  template: src=default5x.tpl dest=/etc/nginx/sites-available/{{ item.key }}.conf
+  with_dict: nginx.vhost
   when: php5x.install == "1"
   notify: restart nginx
 
 - name: Change default nginx site
   sudo: yes
-  template: src=default7x.tpl dest=/etc/nginx/sites-available/default
+  template: src=default7x.tpl dest=/etc/nginx/sites-available/{{ item.key }}.conf
+  with_dict: nginx.vhost
   when: php7x.install == "1"
   notify: restart nginx
+
+- name: Create links for sites-enabled
+  sudo: yes
+  file: state=link src=/etc/nginx/sites-available/{{ item }}.conf dest=/etc/nginx/sites-enabled/{{ item }}.conf
+  with_items: "{{ nginx.vhost.keys() }}"
+  notify: reload nginx
