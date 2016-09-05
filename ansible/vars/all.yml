@@ -1,7 +1,7 @@
 ---
 server:
     install: '1'
-    packages: [vim, git, htop, nodejs, npm]
+    packages: [vim, git, htop, nodejs, npm, nmap]
     timezone: UTC
     locale: de_DE.UTF-8
 nginx:
@@ -15,9 +15,9 @@ nginx:
         servername: dev.eventsourcing.io
 mysql:
     install: '1'
+    root_password: dohernandez
     databases:
       dohernandez:
-        root_password: dohernandez
         user: dohernandez
         password: dohernandez
         dump: ''

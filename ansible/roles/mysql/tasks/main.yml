@@ -12,7 +12,7 @@
     - python-mysqldb
 
 - name: mysql | Update root password for all root accounts
-  mysql_user: name=root host={{ item }} check_implicit_admin=yes password={{ mysql_root_password }} login_user=root login_password={{ mysql_root_password }}
+  mysql_user: name=root host={{ item }} check_implicit_admin=yes password={{ mysql.root_password }} login_user=root login_password={{ mysql.root_password }}
   with_items:
     - "{{ current_hostname.stdout | lower }}"
     - 127.0.0.1
@@ -20,17 +20,20 @@
     - localhost
 
 - name: mysql | Create databases
-  mysql_db: name={{ mysql_database }} state=present login_user=root login_password={{ mysql_root_password }}
-
-- name: mysql | Import dump
-  mysql_db: name={{ mysql_database }} state=import login_user=root login_password={{ mysql_root_password }} target=/vagrant/{{ mysql_dump }}
-  when: mysql_dump
+  mysql_db: name={{ item.key }} state=present login_user=root login_password={{ mysql.root_password }}
+  with_dict: "{{ mysql.databases }}"
 
 - name: mysql | Ensure anonymous users are not in the database
-  mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql_root_password }}
+  mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql.root_password }}
   with_items:
     - localhost
     - "{{ current_hostname.stdout | lower }}"
 
 - name: mysql | Create users
-  mysql_user: name={{ mysql_user }} password={{ mysql_password }} priv={{ mysql_database }}.*:ALL state=present login_user=root login_password={{ mysql_root_password }}
+  mysql_user: name={{ item.value.user }} password={{ item.value.password }} priv={{ item.key }}.*:ALL state=present login_user=root login_password={{ mysql.root_password }}
+  with_dict: "{{ mysql.databases }}"
+
+- name: mysql | Import dump
+  mysql_db: name={{ item.key }} state=import login_user={{ item.value.user }} login_password={{ item.value.password }} target=/vagrant/{{ item.value.dump }}
+  when: item.value.dump
+  with_dict: "{{ mysql.databases }}"
