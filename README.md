@@ -1,10 +1,12 @@
 # Automation
-##Background
+
+## Background
+
 Vagrant and VirtualBox (or some other VM provider) can be used to quickly build or rebuild virtual servers.
 
 This repository contains the Ansible automation code to provision a simple Nginx, MySQL and PHP (the 'EMP' part of 'LEMP') environment.
 
-##Applications available
+## Applications available
 
 - **LEMP** (Linux Nginx 1.4, MySQL, and PHP-fpm 7.0) _installed_
     + MySQL connection details:
@@ -45,10 +47,6 @@ copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the 
 ### Ansible settings
 To edit where Ansible can find its commands to run during the vagrant provision, 
 copy the `config/box_setting.dist.yml` to `config/box_setting.yml` and edit the file.
-
-### Ansible variable
-To edit the Variables in Ansible used in all the roles available, 
-copy the `config/ansible_vars.dist.yml` to `config/ansible_vars.yml` and the edit the file.
 
 ## Software
 
